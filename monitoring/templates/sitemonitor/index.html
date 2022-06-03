@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'assets/plugins/global/plugins.bundle.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/style.bundle.css' %}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 mt-15">
+            <div class="card card-custom gutter-b example example-compact">
+                <form class="form" action="{% url 'sitemonitor:startmonitor' %}" method="post" id="kt_form_1">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Domain Name:</label>
+                            <input type="text" class="form-control form-control-solid" name="domainName"
+                                   placeholder="Enter domain name" value="{{monitorData.domainName}}"/>
+                            <span class="form-text text-muted">Please enter your domain name</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Interval (seconds):</label>
+                            <input type="text" class="form-control form-control-solid" name="interval"
+                                   placeholder="Enter interval" value="{{monitorData.interval}}"/>
+                            <span class="form-text text-muted">Please enter interval for domain checking</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Email address:</label>
+                            <input type="email" class="form-control form-control-solid" name="email"
+                                   placeholder="Enter email" value="{{monitorData.email}}"/>
+                            <span class="form-text text-muted">We'll never share your email with anyone else</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Notification interval (minutes):</label>
+                            <input type="text" class="form-control form-control-solid" name="notificationInterval"
+                                   placeholder="Enter notification interval"
+                                   value="{{monitorData.notificationInterval}}"/>
+                            <span class="form-text text-muted">Please enter interval for notification</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Additional Monitoring:</label>
+                            <div class="checkbox-list">
+                                <label class="checkbox">
+                                     {% if monitorData.SSLEnable == True %}
+                                            <input type="checkbox" name="SSLEnable" id="SSLEnable"  checked/>
+                                     {% else %}
+                                            <input type="checkbox" name="SSLEnable" id="SSLEnable"/>
+                                     {% endif %}
+                                    <span></span>
+                                    SSL
+                                </label>
+                                {% if monitorData.SSLEnable == True %}
+                                    <div id="ssl_content" class="form-group">
+                                        {% else %}
+                                        <div id="ssl_content" style="display: none;" class="form-group">
+                                    {% endif %}
+                                    <label>Interval (hours):</label>
+                                    <input type="text" class="form-control form-control-solid" name="SSLInterval"
+                                           placeholder="Enter ssl check interval"
+                                           value="{{monitorData.SSLInterval}}"/>
+                                    <span class="form-text text-muted">Please enter interval for ssl check</span>
+                                </div>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="performanceEnable" id="performanceEnable"/>
+                                    <span></span>
+                                    Performance
+                                </label>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <button type="button" onclick="location.href ={% url 'monitor:monitor' %}"
+                                    class="btn btn-secondary">Back
+                            </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };
+
+
+
+
+</script>
+
+
+<script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+<script src="{% static 'assets/js/validation.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
+</body>
+</html>

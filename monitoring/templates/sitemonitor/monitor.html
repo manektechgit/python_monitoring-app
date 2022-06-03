@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="10">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'assets/plugins/global/plugins.bundle.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/style.bundle.css' %}" rel="stylesheet"/>
+
+</head>
+<body>
+
+<div class="card card-custom">
+    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+        <div class="card-title">
+            <h3 class="card-label">Domain Details
+                <span class="d-block text-muted pt-2 font-size-sm">Domain monitoring details</span></h3>
+        </div>
+        <div class="card-toolbar">
+            <!--begin::Button-->
+            <a href="{% url 'sitemonitor:addmonitor' %}" class="btn btn-primary font-weight-bolder">
+											<span class="svg-icon svg-icon-md">
+                                                <!--end::Svg Icon-->
+											</span>Add New Domain</a>
+            <!--end::Button-->
+        </div>
+    </div>
+    <div class="card-body">
+        <!--begin: Search Form-->
+        <!--begin::Search Form-->
+        <form method="post">
+            <div class="mb-7">
+                <div class="row align-items-center">
+                    <div class="col-lg-10 col-xl-9">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 my-2 my-md-0">
+                                <div class="input-icon">
+                                    <input type="text" class="form-control" placeholder="Search..."
+                                           id="kt_datatable_search_query"/>
+                                    <span>
+																	<i class="flaticon2-search-1 text-muted"></i>
+																</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <label class="mr-3 mb-0 d-none d-md-block">Domain:</label>
+                                    <select class="form-control" name="selected_domain">
+                                        <option value="">All</option>
+                                        {% for domain in domain_list %}
+                                        {% if domain.domainName == selected_url %}
+                                        <option value={{ domain.domainName }} selected>{{ domain.domainName }}</option>
+                                        {% else %}
+                                        <option value={{ domain.domainName }}>{{ domain.domainName }}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <label class="mr-3 mb-0 d-none d-md-block">Email:</label>
+                                    <select class="form-control" name="selected_email">
+                                        <option value="">All</option>
+                                        {% for data in email_list %}
+                                        {% if data.email == selected_email %}
+                                        <option value={{ data.email }} selected>{{ data.email }}</option>
+                                        {% else %}
+                                        <option value={{ data.email }}>{{ data.email }}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-xl-3 mt-5 mt-lg-0">
+                        <button type="submit" onclick="location.href = {% url 'monitor:monitor' %}"
+                                class="btn btn-light-primary px-6 font-weight-bold">Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Search Form-->
+        <!--begin: Datatable-->
+        <table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
+            <thead>
+            <tr>
+                <th>Domain</th>
+                <th>Email</th>
+                <th>Start Date</th>
+                <th>UpTime (Seconds)</th>
+                <th>DownTime (Seconds)</th>
+                <th>SSLCheck</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for col in monitorData %}
+            <tr>
+                <td>{{col.domainName}}</td>
+                <td>{{col.email}}</td>
+                <td>{{col.startDate}}</td>
+                <td>{{col.upTime}}</td>
+                <td>{{col.downTime}}</td>
+                <td>{{col.SSLEnable}}</td>
+                <td>
+                    <a href="{% url 'sitemonitor:editmonitor' col.id  %}"><i class="fas fa-pen"
+                                                                               ></i></a>
+                    <a href="{% url 'sitemonitor:removemonitor' col.id  %}"><i class="fas fa-trash"
+                                                                               ></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <!--end: Datatable-->
+    </div>
+</div>
+
+<script type='text/javascript'>
+    var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };
+
+</script>
+<script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'assets/js/pages/crud/ktdatatable/base/html-table.js' %}"></script>
+</body>
+</html>
